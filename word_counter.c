@@ -10,60 +10,61 @@ int main(int argc, char *argv[]) {
         printf("Usage: word_counter <fileName>\n");
         
         return 1;
-    }
-
-    char *fileName = argv[1];
+    }  
     
-    FILE *filePointer = fopen(fileName, "r");
-
-    if (filePointer == NULL)
-    {
-        printf("Error: could not open file\n");
-        return 1;
-    }
-    
-    char buffer[LINE_LENGTH];
-    int lines = 0, words = 0, maxLineLength = 0;
-    char lastChar = ' ';
-
-    while (fgets(buffer, sizeof(buffer), filePointer) != NULL)
-    {
-        lines++;
-
-        int currentLength = 0;
+    for (int i = 1; i < argc; i++)
+    {   
+        FILE *filePointer = fopen(argv[i], "r");
         
-        for (size_t i = 0; buffer[i] != '\0'; i++)
+        if (filePointer == NULL)
         {
-            const char current = buffer[i];
+            printf("Error opening %s\n", argv[i]);
+            continue;
+        }
+        
+        char buffer[LINE_LENGTH];
+        int lines = 0, words = 0, maxLineLength = 0;
+        char lastChar = ' ';
+    
+        while (fgets(buffer, sizeof(buffer), filePointer) != NULL)
+        {
+            lines++;
+    
+            int currentLength = 0;
             
-            currentLength++;     
-            
-            if ((current == ' ' || current == '\n' || current == '\t') &&
-            (lastChar != ' ' && lastChar != '\n' && lastChar != '\t'))
+            for (size_t j = 0; buffer[j] != '\0'; j++)
             {
-                words++;
+                const char current = buffer[j];
+                
+                currentLength++;     
+                
+                if ((current == ' ' || current == '\n' || current == '\t') &&
+                (lastChar != ' ' && lastChar != '\n' && lastChar != '\t'))
+                {
+                    words++;
+                }
+                             
+                lastChar = current;
             }
-                         
-            lastChar = current;
+            
+            if (currentLength > maxLineLength)
+            {
+                maxLineLength = currentLength;
+            }
         }
         
-        if (currentLength > maxLineLength)
+        if (lastChar != ' ' && lastChar != '\n' && lastChar != '\t')
         {
-            maxLineLength = currentLength;
+            words++;
         }
+        
+        printf("\nFile: %s\n", argv[i]);
+        printf("Lines: %d\n", lines);
+        printf("Words: %d\n", words);
+        printf("Longest line: %d characters\n", maxLineLength);
+        
+        fclose(filePointer);
     }
-
-    if (lastChar != ' ' && lastChar != '\n' && lastChar != '\t')
-    {
-        words++;
-    }
-
-
-    printf("Lines: %d\n", lines);
-    printf("Words: %d\n", words);
-    printf("Longest line: %d characters\n", maxLineLength);
-
-    fclose(filePointer);
 
     return 0;
 }
