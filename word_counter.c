@@ -16,27 +16,41 @@ int main(int argc, char *argv[]) {
     
     FILE *filePointer = fopen(fileName, "r");
 
+    if (filePointer == NULL)
+    {
+        printf("Error: could not open file\n");
+        return 1;
+    }
+    
     char buffer[LINE_LENGTH];
-    int lines = 0, words = 0;
+    int lines = 0, words = 0, maxLineLength = 0;
     char lastChar = ' ';
 
     while (fgets(buffer, sizeof(buffer), filePointer) != NULL)
     {
         lines++;
 
+        int currentLength = 0;
+        
         for (size_t i = 0; buffer[i] != '\0'; i++)
         {
             const char current = buffer[i];
             
+            currentLength++;     
+            
             if ((current == ' ' || current == '\n' || current == '\t') &&
-                (lastChar != ' ' && lastChar != '\n' && lastChar != '\t'))
+            (lastChar != ' ' && lastChar != '\n' && lastChar != '\t'))
             {
                 words++;
             }
-
+                         
             lastChar = current;
         }
         
+        if (currentLength > maxLineLength)
+        {
+            maxLineLength = currentLength;
+        }
     }
 
     if (lastChar != ' ' && lastChar != '\n' && lastChar != '\t')
@@ -47,6 +61,9 @@ int main(int argc, char *argv[]) {
 
     printf("Lines: %d\n", lines);
     printf("Words: %d\n", words);
+    printf("Longest line: %d characters\n", maxLineLength);
+
+    fclose(filePointer);
 
     return 0;
 }
