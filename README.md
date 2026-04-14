@@ -33,30 +33,30 @@ A simple command line tool written in C that counts lines, words and finds the l
 - Measure execution time
 
 ### How to use:
-Compilation
+
+- Compilation
 gcc word_counter.c -o word_counter
 
-Usage (Show help)
+- Usage (Show help)
 ./word_counter --help
 
-Single file
+- Single file
 ./word_counter file.txt
 
-Multiple files
+- Multiple files
 ./word_counter file1.txt file2.txt
 
-Count specific word (last argument is treated as the target word)
+- Count specific word (last argument is treated as the target word)
 ./word_counter file.txt hahaha
 
-Multiple files + word count
+- Multiple files + word count
 ./word_counter file1.txt file2.txt hahaha
 
 ### Example Output:
 
-File: file.txt
-Lines: 10
-Words: 50
-Longest line: 80 characters
-'hello' found: 3 times
-
-Time taken: 0.000123 seconds
+- File: file.txt
+- Lines: 10
+- Words: 50
+- Longest line: 80 characters
+- 'hello' found: 3 times
+- Time taken: 0.000123 seconds
